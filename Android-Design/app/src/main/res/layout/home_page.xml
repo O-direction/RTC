@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/darker_gray"
+        android:columnCount="6"
+        android:rowCount="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="216dp"
+            android:layout_gravity="fill"
+            android:text="HomePage"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
+
+
+        <ImageView
+            android:id="@+id/add_friend"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_row="0"
+            android:layout_column="5"
+            android:layout_gravity="top"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:maxWidth="100px"
+            android:maxHeight="100px"
+            android:src="@drawable/add_friend" />
+    </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="1111" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="2222" />
+
+
+</LinearLayout>
