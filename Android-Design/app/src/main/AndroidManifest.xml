@@ -28,9 +28,7 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <activity android:name=".HomePage">
-
-        </activity>
+        <activity android:name=".HomePage" />
 
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 这个Service要继承JCommonService -->
