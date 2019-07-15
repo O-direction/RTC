@@ -8,4 +8,22 @@
     tools:context=".HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="65dp" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/buttom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#E6E6E6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:menu="@menu/bottom_nav_menu" />
+
 </android.support.constraint.ConstraintLayout>
