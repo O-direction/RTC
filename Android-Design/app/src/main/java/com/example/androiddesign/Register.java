@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.hb.dialog.dialog.ConfirmDialog;
 
@@ -45,47 +44,42 @@ public class Register extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!reg_password.getText().toString().equals(reg_password_again.getText().toString())){
-                    Toast.makeText(getApplicationContext(),"两次输入的密码不一致",Toast.LENGTH_LONG).show();
+                JMessageClient.register(reg_username.getText().toString(), reg_password.getText().toString(), new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if(i==0){
+                            confirmDialog.setLogoImg(R.mipmap.dialog_notice).setMsg("注册成功，即将跳转");
+                            confirmDialog.setClickListener(new ConfirmDialog.OnBtnClickListener() {
+                                @Override
+                                public void ok() {
 
-                }else {
-                    JMessageClient.register(reg_username.getText().toString(), reg_password.getText().toString(), new BasicCallback() {
-                        @Override
-                        public void gotResult(int i, String s) {
-                            if (i == 0) {
-                                confirmDialog.setLogoImg(R.mipmap.dialog_notice).setMsg("注册成功，即将跳转");
-                                confirmDialog.setClickListener(new ConfirmDialog.OnBtnClickListener() {
-                                    @Override
-                                    public void ok() {
-                                        finish();
-                                    }
+                                }
 
-                                    @Override
-                                    public void cancel() {
+                                @Override
+                                public void cancel() {
 
-                                    }
-                                });
-                                confirmDialog.show();
+                                }
+                            });
+                            confirmDialog.show();
 
 
-                            } else {
-                                confirmDialog.setLogoImg(R.mipmap.dialog_notice).setMsg("" + s);
-                                confirmDialog.setClickListener(new ConfirmDialog.OnBtnClickListener() {
-                                    @Override
-                                    public void ok() {
-                                        finish();
-                                    }
+                        }else{
+                            confirmDialog.setLogoImg(R.mipmap.dialog_notice).setMsg(""+s);
+                            confirmDialog.setClickListener(new ConfirmDialog.OnBtnClickListener() {
+                                @Override
+                                public void ok() {
+                                    finish();
+                                }
 
-                                    @Override
-                                    public void cancel() {
+                                @Override
+                                public void cancel() {
 
-                                    }
-                                });
-                                confirmDialog.show();
-                            }
+                                }
+                            });
+                            confirmDialog.show();
                         }
-                    });
-                }
+                    }
+                });
             }
         });
     }

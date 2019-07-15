@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.androiddesign">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/nav_header_title"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +23,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Register"
+        <activity
+            android:name=".Register"
             android:parentActivityName=".MainActivity">
+
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -34,8 +39,10 @@
 
         <activity android:name=".ContactNotifyEventReceiver"/>
         <!-- Since JCore2.0.0 Required SDK核心功能-->
+
         <!-- 这个Service要继承JCommonService -->
-        <service android:name="com.example.androiddesign.PushService"
+        <service
+            android:name=".PushService"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
@@ -43,9 +50,6 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
-
     </application>
-
-
 
 </manifest>

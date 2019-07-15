@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             confirmDialog.setClickListener(new ConfirmDialog.OnBtnClickListener() {
                                 @Override
                                 public void ok() {
-                                    Intent intent = new Intent(that,HomePage.class);
+                                    Intent intent = new Intent(that,HomeActivity.class);
                                     startActivity(intent);
 
                                 }
