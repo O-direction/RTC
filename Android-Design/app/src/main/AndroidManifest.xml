@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".register"
+        <activity android:name=".Register"
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -30,6 +30,9 @@
 
         <activity android:name=".HomePage" />
 
+        <activity android:name=".FriendsMain"/>
+
+        <activity android:name=".ContactNotifyEventReceiver"/>
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 这个Service要继承JCommonService -->
         <service android:name="com.example.androiddesign.PushService"

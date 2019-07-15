@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(that,register.class);
+                Intent intent = new Intent(that, Register.class);
                 startActivity(intent);
             }
         });

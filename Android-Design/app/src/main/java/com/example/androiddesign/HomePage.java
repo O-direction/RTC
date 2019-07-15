@@ -1,5 +1,6 @@
 package com.example.androiddesign;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -74,9 +75,18 @@ public class HomePage extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         myAlertInputDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"取消",Toast.LENGTH_LONG).show();
                     }
                 });
                 myAlertInputDialog.show();
+            }
+        });
+        friends.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(that, FriendsMain.class);
+                startActivity(intent);
             }
         });
 
