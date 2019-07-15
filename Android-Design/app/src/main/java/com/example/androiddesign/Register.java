@@ -12,7 +12,7 @@ import com.hb.dialog.dialog.ConfirmDialog;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
 
-public class register extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     private EditText reg_username;
     private EditText reg_password;
