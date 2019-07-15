@@ -63,7 +63,7 @@
         android:text="登 录"
         android:textColor="@android:color/white"
         android:textSize="18sp"/>
-    <!--显示tv register , find_psw -->
+    <!--显示tv Register , find_psw -->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
