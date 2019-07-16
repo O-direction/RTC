@@ -11,8 +11,12 @@ import android.widget.Toast;
 
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
+import java.util.List;
+
 import cn.jpush.im.android.api.ContactManager;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.api.BasicCallback;
 
 import static cn.jpush.im.android.api.ContactManager.sendInvitationRequest;
@@ -48,11 +52,10 @@ public class HomePage extends AppCompatActivity {
         D_me.setBounds(0, 0, 40, 40);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         me.setCompoundDrawables(null, D_me, null, null);
 
-
         add_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(that).builder()
+                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(HomePage.this).builder()
                         .setTitle("请输入对方的用户名")
                         .setEditText("");
                 myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
@@ -81,16 +84,26 @@ public class HomePage extends AppCompatActivity {
                 myAlertInputDialog.show();
             }
         });
+
         friends.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(that, FriendsMain.class);
+                Intent intent = new Intent(HomePage.this, FriendsMain.class);
                 startActivity(intent);
             }
         });
 
+        List<Message> allMessage;
+        Message latestMessage;
+
+        List<Conversation> listConversation=JMessageClient.getConversationList();
+        for (Conversation conversation:listConversation
+             ) {
+                    allMessage = conversation.getAllMessage();
+                    latestMessage = conversation.getLatestMessage();
+        }
+
+
     }
-
-
 }

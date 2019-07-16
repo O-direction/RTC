@@ -1,5 +1,6 @@
 package com.example.androiddesign;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,12 +29,17 @@ public class HomeActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //会话功能
+
                     return true;
                 case R.id.navigation_dashboard:
                     //好友列表
+                    Intent intent = new Intent(HomeActivity.this, FriendsMain.class);
+                    startActivity(intent);
+
                     return true;
                 case R.id.navigation_notifications:
                     //个人主页
+
                     return true;
             }
             return false;
@@ -57,7 +64,10 @@ public class HomeActivity extends AppCompatActivity
         //底部导航
         BottomNavigationView navView = findViewById(R.id.buttom);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
     }
+
 
     @Override
     public void onBackPressed() {
