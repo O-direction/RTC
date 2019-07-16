@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.hb.dialog.dialog.LoadingDialog;
 import com.hb.dialog.myDialog.MyAlertDialog;
+import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,11 +33,11 @@ public class FriendsMain extends AppCompatActivity {
     private TextView friends;
     private TextView talk;
     private TextView me;
-    private List<Friends> data = null;
+    private LinkedList<Friends> data = null;
     private Context context;
     private FriendsAdapter friendsAdapter = null;
     private ListView list_friend;
-    private LoadingDialog loadingDialog;
+    private LoadingDialog loading;
 
 
     @Override
@@ -45,6 +46,24 @@ public class FriendsMain extends AppCompatActivity {
         setContentView(R.layout.friends);
         JMessageClient.init(this, true);
         JMessageClient.registerEventReceiver(this);
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        function();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        JMessageClient.unRegisterEventReceiver(this);
+        super.onDestroy();
+    }
+
+    public void function(){
 
         talk = (TextView)findViewById(R.id.talk);
         friends = (TextView)findViewById(R.id.friends);
@@ -75,13 +94,16 @@ public class FriendsMain extends AppCompatActivity {
         data = new LinkedList<Friends>();
         data.add(new Friends(R.drawable.new_friend_portrait,"新的朋友"));
 
+        friendsAdapter = new FriendsAdapter(data, context);
+        list_friend.setAdapter(friendsAdapter);
         ContactManager.getFriendList(new GetUserInfoListCallback() {
             @Override
             public void gotResult(int responseCode, String responseMessage, List<UserInfo> userInfoList) {
                 if (0 == responseCode) {
                     for (UserInfo userinfo:userInfoList
-                         ) {
+                    ) {
                         data.add(new Friends(R.drawable.head_portrait,userinfo.getUserName()));
+                        friendsAdapter.notifyDataSetChanged();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),""+responseMessage,Toast.LENGTH_LONG).show();
@@ -90,17 +112,38 @@ public class FriendsMain extends AppCompatActivity {
         });
 
 
-        friendsAdapter = new FriendsAdapter((LinkedList<Friends>) data, context);
-        list_friend.setAdapter(friendsAdapter);
-
         list_friend.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if(position == 0){
-                    loadingDialog = new LoadingDialog(FriendsMain.this);
-                    loadingDialog.setMessage("请留在朋友页面,按返回键退出");
-                    loadingDialog.show();
+                    final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(FriendsMain.this).builder()
+                            .setTitle("请输入对方的用户名")
+                            .setEditText("");
+                    myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String res = myAlertInputDialog.getResult();
+                            myAlertInputDialog.dismiss();
+                            ContactManager.sendInvitationRequest(res,"", "hello", new BasicCallback(){
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    if(i==0){
+                                        Toast.makeText(getApplicationContext(),"发送成功",Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+                    }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            myAlertInputDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"取消",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    myAlertInputDialog.show();
                 }else{
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -115,17 +158,9 @@ public class FriendsMain extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        JMessageClient.unRegisterEventReceiver(this);
-        super.onDestroy();
     }
 
     public void onEvent(ContactNotifyEvent event) {
-        loadingDialog.dismiss();
         String reason = event.getReason();
         final String fromUsername = event.getFromUsername();
         final String appkey = event.getfromUserAppKey();

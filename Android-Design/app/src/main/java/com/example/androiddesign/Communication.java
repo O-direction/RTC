@@ -50,6 +50,7 @@ public class Communication extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         JMessageClient.unRegisterEventReceiver(this);
+        JMessageClient.exitConversation();
         super.onDestroy();
     }
 
@@ -60,6 +61,14 @@ public class Communication extends AppCompatActivity {
         Conversation.createSingleConversation(name);
         Conversation conversation = JMessageClient.getSingleConversation(name);
         List<Message> listMessage = conversation.getAllMessage();
+
+        inputText = (EditText) findViewById(R.id.input_text);
+        send = (Button)findViewById(R.id.send);
+        msgRecyclerView = (RecyclerView) findViewById(R.id.msg_recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        msgRecyclerView.setLayoutManager(layoutManager);
+        adapter = new MsgAdapter(msgList);
+        msgRecyclerView.setAdapter(adapter);
 
         //获取上一次对话的内容
         for (Message mes: listMessage
@@ -76,16 +85,10 @@ public class Communication extends AppCompatActivity {
                 msgList.add(msg);
             }
         }
+        msgRecyclerView.scrollToPosition(msgList.size() -1);
 
 
 
-        inputText = (EditText) findViewById(R.id.input_text);
-        send = (Button)findViewById(R.id.send);
-        msgRecyclerView = (RecyclerView) findViewById(R.id.msg_recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        msgRecyclerView.setLayoutManager(layoutManager);
-        adapter = new MsgAdapter(msgList);
-        msgRecyclerView.setAdapter(adapter);
 
         //发送消息并且展示
         send.setOnClickListener(new View.OnClickListener() {

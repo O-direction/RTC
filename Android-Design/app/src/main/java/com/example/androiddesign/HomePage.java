@@ -1,32 +1,34 @@
 package com.example.androiddesign;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.hb.dialog.myDialog.MyAlertInputDialog;
-
+import java.util.LinkedList;
 import java.util.List;
 
-import cn.jpush.im.android.api.ContactManager;
+
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
-import cn.jpush.im.api.BasicCallback;
 
-import static cn.jpush.im.android.api.ContactManager.sendInvitationRequest;
 
 public class HomePage extends AppCompatActivity {
 
-    private ImageView add_friend;
     private TextView friends;
     private TextView talk;
     private TextView me;
+    private LinkedList<HomeConversation> data = null;
+    private Context context;
+    private ConversationAdapter conversationAdapter = null;
+    private ListView conversation_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,12 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.home_page);
         JMessageClient.init(this, true);
 
-        add_friend = (ImageView)findViewById(R.id.add_friend);
+        DrawableChange();
+        DisplayConversation();
+    }
+
+    public void DrawableChange(){
+
         talk = (TextView)findViewById(R.id.talk);
         friends = (TextView)findViewById(R.id.friends);
         me = (TextView)findViewById(R.id.me);
@@ -52,39 +59,6 @@ public class HomePage extends AppCompatActivity {
         D_me.setBounds(0, 0, 40, 40);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         me.setCompoundDrawables(null, D_me, null, null);
 
-        add_friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(HomePage.this).builder()
-                        .setTitle("请输入对方的用户名")
-                        .setEditText("");
-                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final String res = myAlertInputDialog.getResult();
-                        myAlertInputDialog.dismiss();
-                        ContactManager.sendInvitationRequest(res,"", "hello", new BasicCallback(){
-                            @Override
-                            public void gotResult(int i, String s) {
-                                if(i==0){
-                                    Toast.makeText(getApplicationContext(),"发送成功",Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        myAlertInputDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),"取消",Toast.LENGTH_LONG).show();
-                    }
-                });
-                myAlertInputDialog.show();
-            }
-        });
-
         friends.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -93,17 +67,48 @@ public class HomePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        List<Message> allMessage;
+    public void DisplayConversation(){
         Message latestMessage;
+        String name;
+
+        context = HomePage.this;
+        conversation_list = (ListView) findViewById(R.id.conversation_list);
+        data = new LinkedList<HomeConversation>();
+        conversationAdapter = new ConversationAdapter(data, context);
+        conversation_list.setAdapter(conversationAdapter);
+
 
         List<Conversation> listConversation=JMessageClient.getConversationList();
         for (Conversation conversation:listConversation
-             ) {
-                    allMessage = conversation.getAllMessage();
-                    latestMessage = conversation.getLatestMessage();
+        ) {
+            latestMessage = conversation.getLatestMessage();
+            TextContent textContent =(TextContent) latestMessage.getContent();
+            String message = textContent.getText();
+            if(message.length()>=20)
+                message = message.substring(0,20);
+            name = conversation.getTargetId();
+            data.add(new HomeConversation(R.drawable.head_portrait, name , message));
+            conversationAdapter.notifyDataSetChanged();
         }
 
+
+        conversation_list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            HomeConversation click_friend = (HomeConversation)conversationAdapter.getItem(position);
+                            Intent i = new Intent(context, Communication.class);
+                            i.putExtra("Name", click_friend.getName());
+                            startActivity(i);
+                        }
+                    });
+            }
+        });
 
     }
 }

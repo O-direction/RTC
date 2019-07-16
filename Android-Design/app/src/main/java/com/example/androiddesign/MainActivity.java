@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         JMessageClient.init(this, true);
 
+        function();
+    }
+    public void function(){
         sign_in = (Button) findViewById(R.id.sign_in);
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
