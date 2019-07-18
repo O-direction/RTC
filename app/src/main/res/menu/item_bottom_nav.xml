@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_chat"
+        android:title="聊天"
+        android:icon="@drawable/icon_wechat"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/item_friend"
+        android:icon="@drawable/icon_addperson"
+        android:title="通讯录"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/item_me"
+        android:icon="@drawable/icon_signal"
+        android:title="我"
+        app:showAsAction="withText"/>
+</menu>
