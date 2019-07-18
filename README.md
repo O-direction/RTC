@@ -2,5 +2,5 @@
 A Real-time communication like QQ and We_Chat producing by jiguang_IMSDK
 
 
-# OLD分支下为基本的功能加基础的界面
-# NEW分支下为界面优化后的
+# old旧分支下为基础界面加功能
+# new新分支将界面做了相应的优化
