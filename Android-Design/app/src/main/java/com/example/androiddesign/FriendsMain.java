@@ -103,13 +103,14 @@ public class FriendsMain extends AppCompatActivity {
                     for (UserInfo userinfo:userInfoList
                     ) {
                         data.add(new Friends(R.drawable.head_portrait,userinfo.getUserName()));
-                        friendsAdapter.notifyDataSetChanged();
+
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),""+responseMessage,Toast.LENGTH_LONG).show();
                 }
             }
         });
+        friendsAdapter.notifyDataSetChanged();
 
 
         list_friend.setOnItemClickListener(new AdapterView.OnItemClickListener(){
